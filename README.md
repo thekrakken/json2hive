@@ -4,8 +4,47 @@ Json to Hive table
 
 json2hive is simple API that convert your Json data into Hive table.
 
-# How to use it
+This API will take a curated JSON document and generate the Hive schema (CREATE TABLE statement) for use with the _any Json serDe_. I say "curated" because you should ensure that every possible key is present (with some arbitrary value of the right data type) and that all arrays have at least one entry. Otherwide json2Hive will assume that the default value is STRING.
+
+If the curated JSON example you provide has more than one entry in an array, only the first one will be examined, so you should ensure that it has all the field.
+
+## Build
+
+    gradle build
+    
+gradle will create `jsonToHive-${version}.jar` in the `build/libs/` folder.
+
+## Usage
+
+### As API in your application
 
     String tableName = "MY_HIVE_TABLE";
-    String hiveSchema = Json.create(tableName, jsonString);
+    String json = ...;
+    /** Create a default hive table */
+    String hiveSchema = Json.create(tableName, json);
+    
+    /** Create hive table with ROW FORMAT */
+    String hiveSchemaWithRow = Json.create(tableName, json, true, [OPTIONAL] "classOfTheSerde");
 
+
+### Example:
+
+Json document:
+
+    {
+        "value" : "Some text in here",
+        "value2" : 5645454
+    }
+    
+Generate the Hive table from the Json sample
+
+    String hiveSchema = Json.create("my_table", json, [true]);
+    
+The resultat will be
+
+    CREATE EXTERNAL TABLE my_table (
+    value STRING,
+    value2 BIGINT
+    )
+    [ IN CASE YOU WANTED THE ROW SERDE:]
+    ROW FORMAT SERDE 'com.cloudera.hive.serde.JSONSerDe'
