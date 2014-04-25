@@ -1,3 +1,18 @@
+/*******************************************************************************
+ * Copyright 2014 Anthony Corbacho and contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 package io.thekrakken.tohive;
 
 public class HiveTable {
@@ -26,6 +41,14 @@ public class HiveTable {
     tableSchema += "\n)";
   }
 
+  public void addJsonSerde(String serdeClassName){
+    tableSchema += "\nROW FORMAT SERDE '"+serdeClassName+"'";
+  }
+
+  public void addJsonSerde(){
+    addJsonSerde("com.cloudera.hive.serde.JSONSerDe");
+  }
+
   public String getSchema(){
     return tableSchema;
   }
@@ -51,7 +74,7 @@ public class HiveTable {
       tableSchema += ",\n";
     }
     addComma++;
-    tableSchema += name + " " + hiveUtils.STRUCT + "<\n" + hiveUtils.struct(value, 0) + "\n\t>";
+    tableSchema += name + " " + hiveUtils.STRUCT + "< " + hiveUtils.struct(value, 0) + " >";
   }
 
   public void addArray(String name, String value) {
@@ -62,7 +85,7 @@ public class HiveTable {
     if (value.equals("[]")) {
       tableSchema += name + " " + hiveUtils.DEFAULT_ARRAY;
     } else {
-      tableSchema += name + " " + hiveUtils.ARRAY + "<\n" + hiveUtils.array(value) + "\n\t>";
+      tableSchema += name + " " + hiveUtils.ARRAY + "< " + hiveUtils.array(value) + " >";
     }
   }
 

@@ -1,3 +1,18 @@
+/*******************************************************************************
+ * Copyright 2014 Anthony Corbacho and contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 package io.thekrakken.tohive;
 
 import java.util.regex.Pattern;
@@ -117,7 +132,7 @@ public class hiveUtils {
 
   public static String arrayToStruct(String jsonObject) {
     String val = "";
-    val += STRUCT + "<\n" + struct(jsonObject.toString(), 1) + "\n >";
+    val += STRUCT + "<" + struct(jsonObject.toString(), 1) + ">";
     return val;
   }
 
@@ -144,22 +159,22 @@ public class hiveUtils {
 
       if (val.isJsonObject() && nasted >= 1) {
         if (COMMA > 0) {
-          struct += ",\n";
+          struct += ",";
         }
         COMMA = 0;
-        struct += key + ":" + STRUCT + "<\n" + struct(val.toString(), 1) + "\n >";
+        struct += key + ":" + STRUCT + "<" + struct(val.toString(), 1) + ">";
       }
       // Array
       else if (val.isJsonArray()) {
         if (COMMA > 0) {
-          struct += ",\n";
+          struct += ",";
         }
         COMMA++;
 
-        struct += key + ":" + ARRAY + "<\n" + array(val.toString()) + "\n >";
+        struct += key + ":" + ARRAY + "<" + array(val.toString()) + ">";
       } else { // normal field
         if (COMMA > 0) {
-          struct += ",\n";
+          struct += ",";
         }
         COMMA++;
 
