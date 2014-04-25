@@ -70,6 +70,7 @@ public class hiveUtils {
    * @param value
    * @return
    */
+  @SuppressWarnings("unused")
   public static String findType(String value) {
 
     if (value.toLowerCase().equals("true") || value.toLowerCase().equals("false"))
