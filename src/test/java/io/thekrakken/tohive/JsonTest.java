@@ -36,14 +36,21 @@ public class JsonTest {
   }
 
   @Test
-  public void test003_simpleStructure() throws JsonSyntaxException, Exception {
+  public void test004_simpleStructure() throws JsonSyntaxException, Exception {
     String json = "{\"user\":{\"id\":5645454}}";
     String expected = "CREATE EXTERNAL TABLE "+TBL_NAME+" (\nuser STRUCT< id:BIGINT >\n)";
     assertEquals(expected, Json.create(TBL_NAME, json));
   }
 
   @Test
-  public void test004_tweet() throws JsonSyntaxException, Exception {
+  public void test005_simpleArray() throws JsonSyntaxException, Exception {
+    String json = "{\"user\":[5645454]}";
+    String expected = "CREATE EXTERNAL TABLE "+TBL_NAME+" (\nuser ARRAY< BIGINT >\n)";
+    assertEquals(expected, Json.create(TBL_NAME, json));
+  }
+
+  @Test
+  public void test006_tweet() throws JsonSyntaxException, Exception {
     String json = "{"
         + "\"id\": 318594635540865000,"
         + "\"id_str\": \"294716126003355648\","
@@ -146,7 +153,7 @@ public class JsonTest {
   }
 
   @Test
-  public void test005_tweetWithSerDe() throws JsonSyntaxException, Exception {
+  public void test006_tweetWithSerDe() throws JsonSyntaxException, Exception {
     Boolean withSerde = true;
     String json = "{"
         + "\"id\": 318594635540865000,"
