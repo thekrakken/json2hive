@@ -18,7 +18,6 @@ package io.thekrakken.tohive;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
 
 import java.util.Map.Entry;
 
@@ -52,8 +51,7 @@ public class Json {
    * @throws Exception
    * @throws JsonSyntaxException
    */
-  public static String create(String hiveTableName, String jsonObject) throws Exception,
-      JsonSyntaxException {
+  public static String create(String hiveTableName, String jsonObject) {
     return createHiveTable(hiveTableName, jsonObject).getSchema();
   }
 
@@ -71,8 +69,7 @@ public class Json {
    * @throws Exception
    * @throws JsonSyntaxException
    */
-  public static String create(String hiveTableName, String jsonObject, Boolean withSerde, String serde) throws Exception,
-      JsonSyntaxException {
+  public static String create(String hiveTableName, String jsonObject, Boolean withSerde, String serde) {
     HiveTable hive = createHiveTable(hiveTableName, jsonObject);
     if (withSerde) {
       if (serde != null) {
