@@ -23,6 +23,12 @@ import com.google.gson.JsonParser;
 
 import java.util.Map.Entry;
 
+/**
+ * Usefull tools for creation of the hive table schema
+ *
+ * @author anthonycorbacho
+ * @since 0.0.1
+ */
 public class hiveUtils {
 
   public final static String TABLE_CREATE = "CREATE EXTERNAL TABLE ";
@@ -58,11 +64,10 @@ public class hiveUtils {
   public final static String DEFAULT = " STRING";
 
   /**
-   *
+   * Find the hive field type
    * @param value
    * @return
    */
-  @SuppressWarnings("unused")
   public static String findType(String value) {
 
     if (value.toLowerCase().equals("true") || value.toLowerCase().equals("false"))
@@ -104,6 +109,22 @@ public class hiveUtils {
       return INT;
     }
     return INT;
+  }
+
+  public static String findType(Object value) {
+    if (value instanceof String) return STRING;
+    if (value instanceof Byte) return INT;
+    if (value instanceof Short) return INT;
+    if (value instanceof Integer) return INT;
+    if (value instanceof Long) return BIGINT;
+    if (value instanceof Double) return BIGINT;
+    if (value instanceof Float) return BIGINT;
+    if (value instanceof Boolean) return BOOLEAN;
+    if (DATE_PATTERN.matcher(value.toString()).matches()) return TIMESTAMP;
+    if (HEX_PATTERN.matcher(value.toString()).matches()) return BINARY;
+
+    /** No type found ... */
+    return STRING;
   }
 
   public static String array(String value) {

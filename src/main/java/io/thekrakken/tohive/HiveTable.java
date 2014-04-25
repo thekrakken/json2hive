@@ -15,6 +15,12 @@
  *******************************************************************************/
 package io.thekrakken.tohive;
 
+/**
+ * Create the hive table from the json properties
+ *
+ * @author anthonycorbacho
+ * @since 0.0.1
+ */
 public class HiveTable {
 
 
