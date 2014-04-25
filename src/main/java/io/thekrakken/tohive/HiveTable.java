@@ -6,6 +6,10 @@ public class HiveTable {
   private String tableSchema = "";
   private Integer addComma = 0;
 
+  public void resetCommaFlag(){
+    addComma = 0;
+  }
+
   public HiveTable() {
     tableSchema += hiveUtils.TABLE_CREATE + hiveUtils.HIVE_TABLE_DEFAULT_NAME + " (";
   }

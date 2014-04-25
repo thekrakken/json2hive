@@ -133,7 +133,7 @@ public class hiveUtils {
     JsonElement jsonElement = parser.parse(value);
     JsonObject jsonObject = jsonElement.getAsJsonObject();
     String struct = "";
-
+    COMMA = 0;
     for (Entry<String, JsonElement> entry : jsonObject.entrySet()) {
       String key = entry.getKey();
       JsonElement val = entry.getValue();
