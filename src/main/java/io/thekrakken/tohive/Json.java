@@ -23,93 +23,57 @@ import com.google.gson.JsonSyntaxException;
 import java.util.Map.Entry;
 
 /**
- * Create a Hive table from a JSON file
+ * Generates Hive schemas for use with the JSON SerDe from
+ * com.cloudera.hive.serde.JSONSerDe (but can be change in the create method {@link #create(String, String, Boolean, String)})<p/>
+ *
+ * Pass in a valid JSON document string to {@link #create(String, String)} and it will
+ * return a Hive schema for the JSON sample.<p/>
+ *
+ * It supports embedded JSON objects, arrays and the standard JSON scalar types: strings,
+ * numbers, booleans and null.<p/>
+ * You probably don't want null in the JSON document you provide
+ * as Hive can't use that.<p/>
+ *
+ * This program uses the JSON parsing code from Gson and that code is included in this
+ * library {@see build.gradle}.<p/>
  *
  * @author anthonycorbacho
  * @since 0.0.1
  */
 public class Json {
 
-  public static Json EMPTY = new Json();
-
-  public Json() {}
-
-
   /**
-   * Create Hive table from the json file
+   * Pass in any valid JSON object and a Hive schema will be returned for it.
+   * You should avoid having null values in the JSON document, however.
    *
    * @param hiveTableName
    * @param jsonObject
-   * @return
+   * @return hive table schema
+   * @throws Exception
+   * @throws JsonSyntaxException
    */
   public static String create(String hiveTableName, String jsonObject) throws Exception,
       JsonSyntaxException {
-    HiveTable hive = new HiveTable(hiveTableName);
-
-    JsonParser parser = new JsonParser();
-    JsonElement jsonElement = parser.parse(jsonObject);
-    JsonObject jsonObj = jsonElement.getAsJsonObject();
-
-    for (Entry<String, JsonElement> entry : jsonObj.entrySet()) {
-      String key = entry.getKey();
-      JsonElement value = entry.getValue();
-
-      /** Structure */
-      if (value.isJsonObject()) {
-        hive.addStructure(key, value.toString());
-      }
-      /** Array */
-      else if (value.isJsonArray()) {
-        hive.addArray(key, value.toString());
-      } else {
-        /** primitive */
-        if (value.isJsonNull()) {
-          hive.AddUnknow(value.toString());
-        } else {
-          hive.addPrimitive(key, value.toString());
-        }
-      }
-    }
-    hive.close();
-    return hive.getSchema();
+    return createHiveTable(hiveTableName, jsonObject).getSchema();
   }
 
+
   /**
-   * Create Hive table from the json file
+   * Pass in any valid JSON object and a Hive schema will be returned for it.
+   * You should avoid having null values in the JSON document, however.
    *
    * @param hiveTableName
    * @param jsonObject
-   * @return
+   * @param withSerde : True if you want to incluse SERDE
+   * @param serde : Override serde classname (default: {@code com.cloudera.hive.serde.JSONSerDe})
+   *
+   * @return hive table schema
+   * @throws Exception
+   * @throws JsonSyntaxException
    */
   public static String create(String hiveTableName, String jsonObject, Boolean withSerde, String serde) throws Exception,
       JsonSyntaxException {
-    HiveTable hive = new HiveTable(hiveTableName);
-
-    JsonParser parser = new JsonParser();
-    JsonElement jsonElement = parser.parse(jsonObject);
-    JsonObject jsonObj = jsonElement.getAsJsonObject();
-
-    for (Entry<String, JsonElement> entry : jsonObj.entrySet()) {
-      String key = entry.getKey();
-      JsonElement value = entry.getValue();
-
-      /** Structure */
-      if (value.isJsonObject()) {
-        hive.addStructure(key, value.toString());
-      }
-      /** Array */
-      else if (value.isJsonArray()) {
-        hive.addArray(key, value.toString());
-      } else {
-        /** primitive */
-        if (value.isJsonNull()) {
-          hive.AddUnknow(value.toString());
-        } else {
-          hive.addPrimitive(key, value.toString());
-        }
-      }
-    }
-    hive.close();
+    HiveTable hive = createHiveTable(hiveTableName, jsonObject);
     if (withSerde) {
       if (serde != null) {
         hive.addJsonSerde(serde);
@@ -118,6 +82,37 @@ public class Json {
       }
     }
     return hive.getSchema();
+  }
+
+  private static HiveTable createHiveTable(String hiveTableName, String jsonObject){
+    HiveTable hive = new HiveTable(hiveTableName);
+
+    JsonParser parser = new JsonParser();
+    JsonElement jsonElement = parser.parse(jsonObject);
+    JsonObject jsonObj = jsonElement.getAsJsonObject();
+
+    for (Entry<String, JsonElement> entry : jsonObj.entrySet()) {
+      String key = entry.getKey();
+      JsonElement value = entry.getValue();
+
+      /** Structure */
+      if (value.isJsonObject()) {
+        hive.addStructure(key, value.toString());
+      }
+      /** Array */
+      else if (value.isJsonArray()) {
+        hive.addArray(key, value.toString());
+      } else {
+        /** primitive */
+        if (value.isJsonNull()) {
+          hive.AddUnknow(value.toString());
+        } else {
+          hive.addPrimitive(key, value.toString());
+        }
+      }
+    }
+    hive.close();
+    return hive;
   }
 
 }
