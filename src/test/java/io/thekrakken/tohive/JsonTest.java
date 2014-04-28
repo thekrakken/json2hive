@@ -17,14 +17,14 @@ public class JsonTest {
   @Test
   public void test001_simpleTable() throws JsonSyntaxException, Exception {
     String json = "{\"val\":\"stuffffff\"}";
-    String expected = "CREATE EXTERNAL TABLE "+TBL_NAME+" (\nval STRING\n)";
+    String expected = "CREATE EXTERNAL TABLE "+TBL_NAME+" (\n`val` STRING\n)";
     assertEquals(expected, Json.create(TBL_NAME, json));
   }
 
   @Test
   public void test002_tableWithStringAndNumber() throws JsonSyntaxException, Exception {
     String json = "{\"val\":\"stuffffff\", \"val2\":42}";
-    String expected = "CREATE EXTERNAL TABLE "+TBL_NAME+" (\nval STRING,\nval2 INT\n)";
+    String expected = "CREATE EXTERNAL TABLE "+TBL_NAME+" (\n`val` STRING,\n`val2` INT\n)";
     assertEquals(expected, Json.create(TBL_NAME, json));
   }
   @Test
@@ -33,20 +33,20 @@ public class JsonTest {
               + "\"test\":\"I'm thinking of what should've been and what could've been if.......\","
               + "\"id\": 318594635540865000"
               + "}";
-      assertEquals("CREATE EXTERNAL TABLE "+TBL_NAME+" (\ntest STRING,\nid BIGINT\n)", Json.create(TBL_NAME, json));
+      assertEquals("CREATE EXTERNAL TABLE "+TBL_NAME+" (\n`test` STRING,\n`id` BIGINT\n)", Json.create(TBL_NAME, json));
   }
 
   @Test
   public void test004_simpleStructure() throws JsonSyntaxException, Exception {
     String json = "{\"user\":{\"id\":5645454}}";
-    String expected = "CREATE EXTERNAL TABLE "+TBL_NAME+" (\nuser STRUCT< id:BIGINT >\n)";
+    String expected = "CREATE EXTERNAL TABLE "+TBL_NAME+" (\n`user` STRUCT< `id`:BIGINT >\n)";
     assertEquals(expected, Json.create(TBL_NAME, json));
   }
 
   @Test
   public void test005_simpleArray() throws JsonSyntaxException, Exception {
     String json = "{\"user\":[5645454]}";
-    String expected = "CREATE EXTERNAL TABLE "+TBL_NAME+" (\nuser ARRAY< BIGINT >\n)";
+    String expected = "CREATE EXTERNAL TABLE "+TBL_NAME+" (\n`user` ARRAY< BIGINT >\n)";
     assertEquals(expected, Json.create(TBL_NAME, json));
   }
 
@@ -102,51 +102,51 @@ public class JsonTest {
         + "}";
 
     String expected ="CREATE EXTERNAL TABLE "+TBL_NAME+" (\n" +
-    		"id BIGINT,\n" +
-    		"id_str STRING,\n" +
-    		"text STRING,\n" +
-    		"truncated BOOLEAN,\n" +
-    		"in_reply_to_status_id BIGINT,\n" +
-    		"in_reply_to_status_id_str STRING,\n" +
-    		"user STRUCT< " +
-    		"id:BIGINT," +
-    		"id_str:STRING," +
-    		"name:STRING," +
-    		"screen_name:STRING," +
-    		"location:STRING," +
-    		"url:STRING," +
-    		"description:STRING," +
-    		"protected:BOOLEAN," +
-    		"followers_count:INT," +
-    		"friends_count:INT," +
-    		"listed_count:INT," +
-    		"created_at:STRING," +
-    		"favourites_count:INT," +
-    		"utc_offset:INT," +
-    		"time_zone:STRING," +
-    		"geo_enabled:BOOLEAN," +
-    		"verified:BOOLEAN," +
-    		"statuses_count:BIGINT," +
-    		"lang:STRING," +
-    		"contributors_enabled:BOOLEAN," +
-    		"is_translator:BOOLEAN," +
-    		"profile_background_color:STRING," +
-    		"profile_background_image_url:STRING," +
-    		"profile_background_image_url_https:STRING," +
-    		"profile_background_tile:BOOLEAN," +
-    		"profile_image_url:STRING," +
-    		"profile_image_url_https:STRING," +
-    		"profile_banner_url:STRING," +
-    		"profile_link_color:STRING," +
-    		"profile_sidebar_border_color:STRING," +
-    		"profile_sidebar_fill_color:STRING," +
-    		"profile_text_color:STRING," +
-    		"profile_use_background_image:BOOLEAN," +
-    		"default_profile:BOOLEAN," +
-    		"default_profile_image:BOOLEAN," +
-    		"following:STRING," +
-    		"follow_request_sent:STRING," +
-    		"notifications:STRING" +
+    		"`id` BIGINT,\n" +
+    		"`id_str` STRING,\n" +
+    		"`text` STRING,\n" +
+    		"`truncated` BOOLEAN,\n" +
+    		"`in_reply_to_status_id` BIGINT,\n" +
+    		"`in_reply_to_status_id_str` STRING,\n" +
+    		"`user` STRUCT< " +
+    		"`id`:BIGINT," +
+    		"`id_str`:STRING," +
+    		"`name`:STRING," +
+    		"`screen_name`:STRING," +
+    		"`location`:STRING," +
+    		"`url`:STRING," +
+    		"`description`:STRING," +
+    		"`protected`:BOOLEAN," +
+    		"`followers_count`:INT," +
+    		"`friends_count`:INT," +
+    		"`listed_count`:INT," +
+    		"`created_at`:STRING," +
+    		"`favourites_count`:INT," +
+    		"`utc_offset`:INT," +
+    		"`time_zone`:STRING," +
+    		"`geo_enabled`:BOOLEAN," +
+    		"`verified`:BOOLEAN," +
+    		"`statuses_count`:BIGINT," +
+    		"`lang`:STRING," +
+    		"`contributors_enabled`:BOOLEAN," +
+    		"`is_translator`:BOOLEAN," +
+    		"`profile_background_color`:STRING," +
+    		"`profile_background_image_url`:STRING," +
+    		"`profile_background_image_url_https`:STRING," +
+    		"`profile_background_tile`:BOOLEAN," +
+    		"`profile_image_url`:STRING," +
+    		"`profile_image_url_https`:STRING," +
+    		"`profile_banner_url`:STRING," +
+    		"`profile_link_color`:STRING," +
+    		"`profile_sidebar_border_color`:STRING," +
+    		"`profile_sidebar_fill_color`:STRING," +
+    		"`profile_text_color`:STRING," +
+    		"`profile_use_background_image`:BOOLEAN," +
+    		"`default_profile`:BOOLEAN," +
+    		"`default_profile_image`:BOOLEAN," +
+    		"`following`:STRING," +
+    		"`follow_request_sent`:STRING," +
+    		"`notifications`:STRING" +
     		" >\n" +
     		")";
 
@@ -206,51 +206,51 @@ public class JsonTest {
         + "}";
 
     String expected ="CREATE EXTERNAL TABLE "+TBL_NAME+" (\n" +
-            "id BIGINT,\n" +
-            "id_str STRING,\n" +
-            "text STRING,\n" +
-            "truncated BOOLEAN,\n" +
-            "in_reply_to_status_id BIGINT,\n" +
-            "in_reply_to_status_id_str STRING,\n" +
-            "user STRUCT< " +
-            "id:BIGINT," +
-            "id_str:STRING," +
-            "name:STRING," +
-            "screen_name:STRING," +
-            "location:STRING," +
-            "url:STRING," +
-            "description:STRING," +
-            "protected:BOOLEAN," +
-            "followers_count:INT," +
-            "friends_count:INT," +
-            "listed_count:INT," +
-            "created_at:STRING," +
-            "favourites_count:INT," +
-            "utc_offset:INT," +
-            "time_zone:STRING," +
-            "geo_enabled:BOOLEAN," +
-            "verified:BOOLEAN," +
-            "statuses_count:BIGINT," +
-            "lang:STRING," +
-            "contributors_enabled:BOOLEAN," +
-            "is_translator:BOOLEAN," +
-            "profile_background_color:STRING," +
-            "profile_background_image_url:STRING," +
-            "profile_background_image_url_https:STRING," +
-            "profile_background_tile:BOOLEAN," +
-            "profile_image_url:STRING," +
-            "profile_image_url_https:STRING," +
-            "profile_banner_url:STRING," +
-            "profile_link_color:STRING," +
-            "profile_sidebar_border_color:STRING," +
-            "profile_sidebar_fill_color:STRING," +
-            "profile_text_color:STRING," +
-            "profile_use_background_image:BOOLEAN," +
-            "default_profile:BOOLEAN," +
-            "default_profile_image:BOOLEAN," +
-            "following:STRING," +
-            "follow_request_sent:STRING," +
-            "notifications:STRING" +
+            "`id` BIGINT,\n" +
+            "`id_str` STRING,\n" +
+            "`text` STRING,\n" +
+            "`truncated` BOOLEAN,\n" +
+            "`in_reply_to_status_id` BIGINT,\n" +
+            "`in_reply_to_status_id_str` STRING,\n" +
+            "`user` STRUCT< " +
+            "`id`:BIGINT," +
+            "`id_str`:STRING," +
+            "`name`:STRING," +
+            "`screen_name`:STRING," +
+            "`location`:STRING," +
+            "`url`:STRING," +
+            "`description`:STRING," +
+            "`protected`:BOOLEAN," +
+            "`followers_count`:INT," +
+            "`friends_count`:INT," +
+            "`listed_count`:INT," +
+            "`created_at`:STRING," +
+            "`favourites_count`:INT," +
+            "`utc_offset`:INT," +
+            "`time_zone`:STRING," +
+            "`geo_enabled`:BOOLEAN," +
+            "`verified`:BOOLEAN," +
+            "`statuses_count`:BIGINT," +
+            "`lang`:STRING," +
+            "`contributors_enabled`:BOOLEAN," +
+            "`is_translator`:BOOLEAN," +
+            "`profile_background_color`:STRING," +
+            "`profile_background_image_url`:STRING," +
+            "`profile_background_image_url_https`:STRING," +
+            "`profile_background_tile`:BOOLEAN," +
+            "`profile_image_url`:STRING," +
+            "`profile_image_url_https`:STRING," +
+            "`profile_banner_url`:STRING," +
+            "`profile_link_color`:STRING," +
+            "`profile_sidebar_border_color`:STRING," +
+            "`profile_sidebar_fill_color`:STRING," +
+            "`profile_text_color`:STRING," +
+            "`profile_use_background_image`:BOOLEAN," +
+            "`default_profile`:BOOLEAN," +
+            "`default_profile_image`:BOOLEAN," +
+            "`following`:STRING," +
+            "`follow_request_sent`:STRING," +
+            "`notifications`:STRING" +
             " >\n" +
             ")\n" +
             "ROW FORMAT SERDE 'com.cloudera.hive.serde.JSONSerDe'";

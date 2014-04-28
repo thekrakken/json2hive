@@ -24,15 +24,16 @@ import com.google.gson.JsonParser;
 import java.util.Map.Entry;
 
 /**
- * Usefull tools for creation of the hive table schema
+ * Useful set of constant and function for helping the hive table creation
  *
  * @author anthonycorbacho
  * @since 0.0.1
  */
-public class hiveUtils {
+public class HiveUtils {
 
   public final static String TABLE_CREATE = "CREATE EXTERNAL TABLE ";
   public final static String HIVE_TABLE_DEFAULT_NAME = "MY_TABLE";
+  public final static char ESCAPE_DELIMITER = '`';
 
   private static Integer COMMA = 0;
 
@@ -68,7 +69,7 @@ public class hiveUtils {
   /**
    * Find the hive field type
    * @param value
-   * @return
+   * @return hive type
    */
   @SuppressWarnings("unused")
   public static String findType(String value) {
@@ -114,6 +115,13 @@ public class hiveUtils {
     return INT;
   }
 
+  /**
+   * Experimental, do not use
+   * 
+   * @param value
+   * @return
+   */
+  @Deprecated
   public static String findType(Object value) {
     if (value instanceof String) return STRING;
     if (value instanceof Byte) return INT;
@@ -128,6 +136,10 @@ public class hiveUtils {
 
     /** No type found ... */
     return STRING;
+  }
+  
+  public static String fieldWrapper(String field){
+    return ESCAPE_DELIMITER + field + ESCAPE_DELIMITER;
   }
 
   public static String array(String value) {
@@ -186,7 +198,7 @@ public class hiveUtils {
           struct += ",";
         }
         COMMA = 0;
-        struct += key + ":" + STRUCT + "<" + struct(val.toString(), 1) + ">";
+        struct += fieldWrapper(key) + ":" + STRUCT + "<" + struct(val.toString(), 1) + ">";
       }
       // Array
       else if (val.isJsonArray()) {
@@ -195,7 +207,7 @@ public class hiveUtils {
         }
         COMMA++;
 
-        struct += key + ":" + ARRAY + "<" + array(val.toString()) + ">";
+        struct += fieldWrapper(key) + ":" + ARRAY + "<" + array(val.toString()) + ">";
       } else { // normal field
         if (COMMA > 0) {
           struct += ",";
@@ -203,9 +215,9 @@ public class hiveUtils {
         COMMA++;
 
         if (val.isJsonNull()) {
-          struct += key + ":" + STRING;
+          struct += fieldWrapper(key) + ":" + STRING;
         } else {
-          struct += key + ":" + findType(val.toString());
+          struct += fieldWrapper(key) + ":" + findType(val.toString());
         }
       }
     }

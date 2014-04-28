@@ -32,12 +32,15 @@ public class HiveTable {
   }
 
   public HiveTable() {
-    tableSchema += hiveUtils.TABLE_CREATE + hiveUtils.HIVE_TABLE_DEFAULT_NAME + " (";
+    tableSchema += HiveUtils.TABLE_CREATE + HiveUtils.HIVE_TABLE_DEFAULT_NAME + " (";
   }
 
   public HiveTable(String name) {
+    if (name == null || name == ""){
+      name = HiveUtils.HIVE_TABLE_DEFAULT_NAME;
+    }
 
-    tableSchema += hiveUtils.TABLE_CREATE + name + " (\n";
+    tableSchema += HiveUtils.TABLE_CREATE + name + " (\n";
   }
 
   /**
@@ -64,7 +67,7 @@ public class HiveTable {
       tableSchema += ",\n";
     }
     addComma++;
-    tableSchema += name + " " + hiveUtils.findType(value);
+    tableSchema += HiveUtils.fieldWrapper(name) + " " + HiveUtils.findType(value);
   }
 
   public void AddUnknow(String name) {
@@ -72,7 +75,7 @@ public class HiveTable {
       tableSchema += ",\n";
     }
     addComma++;
-    tableSchema += name + " " + hiveUtils.STRING;
+    tableSchema += HiveUtils.fieldWrapper(name) + " " + HiveUtils.STRING;
   }
 
   public void addStructure(String name, String value) {
@@ -80,7 +83,7 @@ public class HiveTable {
       tableSchema += ",\n";
     }
     addComma++;
-    tableSchema += name + " " + hiveUtils.STRUCT + "< " + hiveUtils.struct(value, 0) + " >";
+    tableSchema += HiveUtils.fieldWrapper(name) + " " + HiveUtils.STRUCT + "< " + HiveUtils.struct(value, 0) + " >";
   }
 
   public void addArray(String name, String value) {
@@ -89,9 +92,9 @@ public class HiveTable {
     }
     addComma++;
     if (value.equals("[]")) {
-      tableSchema += name + " " + hiveUtils.DEFAULT_ARRAY;
+      tableSchema += HiveUtils.fieldWrapper(name) + " " + HiveUtils.DEFAULT_ARRAY;
     } else {
-      tableSchema += name + " " + hiveUtils.ARRAY + "< " + hiveUtils.array(value) + " >";
+      tableSchema += HiveUtils.fieldWrapper(name) + " " + HiveUtils.ARRAY + "< " + HiveUtils.array(value) + " >";
     }
   }
 
