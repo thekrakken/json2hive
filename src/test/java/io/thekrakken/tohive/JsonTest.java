@@ -1,7 +1,7 @@
 package io.thekrakken.tohive;
 
 import static org.junit.Assert.*;
-import io.thekrakken.json2hive.Json;
+import io.thekraken.json2hive.Json;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;

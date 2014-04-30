@@ -1,11 +1,34 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
+// project deployment
+apply plugin: 'maven'
+apply plugin: 'signing'
+
 sourceCompatibility = JavaVersion.VERSION_1_6
+group = 'io.thekrakken'
 version = '0.0.1'
+
+// Javadoc task
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from 'build/docs/javadoc'
+}
+
+// Source task
+task sourcesJar(type: Jar) {
+  from sourceSets.main.allSource
+  classifier = 'sources'
+}
 
 task wrapper(type: Wrapper) {
   gradleVersion = '1.10'
+}
+
+artifacts {
+  archives jar
+  archives javadocJar
+  archives sourcesJar
 }
 
 repositories {
@@ -16,4 +39,48 @@ repositories {
 dependencies {
   compile "com.google.code.gson:gson:2.2.4"
   testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+signing {
+  sign configurations.archives
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: sonatypeUsername, password: sonatypePassword)
+      }
+
+      pom.project {
+        name 'json2Hive'
+        packaging 'jar'
+        description 'Generate a Hive schema from JSON sample'
+        url 'https://github.com/thekrakken/json2hive'
+        scm {
+          url 'scm:git@github.com:thekrakken/json2hive.git'
+          connection 'scm:git@github.com:thekrakken/json2hive.git'
+          developerConnection 'scm:git@github.com:thekrakken/json2hive.git'
+        }
+
+        licenses {
+          license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution 'repo'
+          }
+        }
+
+        developers {
+          developer {
+            id 'anthony-corbacho'
+            name 'Anthony Corbacho'
+            email 'corbacho.anthony@gmail.com'
+          }
+        }
+      }
+    }
+  }
 }
