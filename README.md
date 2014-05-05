@@ -24,7 +24,7 @@ gradle will create `jsonToHive-${version}.jar` in the `build/libs/` folder.
 
 Or with gradle
    	
-	compile "com.nflabs:json2hive:0.1.0"
+	compile "io.thekraken:json2hive:0.1.0"
 
 ## Usage
 
