@@ -14,6 +14,18 @@ If the curated JSON example you provide has more than one entry in an array, onl
     
 gradle will create `jsonToHive-${version}.jar` in the `build/libs/` folder.
 
+## Maven repository
+
+    <dependency>
+      <groupId>io.thekraken</groupId>
+        <artifactId>json2hive</artifactId>
+	  <version>0.1.0</version>
+	  </dependency>
+
+Or with gradle
+   	
+	compile "com.nflabs:json2hive:0.1.0"
+
 ## Usage
 
 ### As API in your application
