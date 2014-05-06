@@ -20,7 +20,7 @@ gradle will create `jsonToHive-${version}.jar` in the `build/libs/` folder.
       <groupId>io.thekraken</groupId>
       <artifactId>json2hive</artifactId>
       <version>0.1.0</version>
-   </dependency>
+    </dependency>
 
 Or with gradle
 =======
