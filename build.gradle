@@ -9,6 +9,10 @@ sourceCompatibility = JavaVersion.VERSION_1_6
 group = 'io.thekraken'
 version = '0.1.0'
 
+task wrap(type: Wrapper) {
+  gradleVersion = '1.10'
+}
+
 // Javadoc task
 task javadocJar(type: Jar, dependsOn: javadoc) {
   classifier = 'javadoc'
