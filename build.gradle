@@ -48,7 +48,7 @@ dependencies {
 signing {
   sign configurations.archives
 }
-
+/*
 uploadArchives {
   repositories {
     mavenDeployer {
@@ -88,3 +88,4 @@ uploadArchives {
     }
   }
 }
+*/
